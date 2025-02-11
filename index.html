@@ -153,6 +153,7 @@
         // const hugSound = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2861/2861-preview.mp3'] });
         const hugSound = new Howl({ src: ['hug.wav'] });
         const sparkleSound = new Howl({ src: ['baloon.wav'] });
+        const cheersSound = new Howl({ src: ['cheers.wav'] });
         // const sparkleSound = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2439/2439-preview.mp3'] });
 
         function createHearts() {
@@ -225,6 +226,7 @@
                     sparkleSound.play();
                     
                     if (score === 3) {
+                        cheersSound.play();
                         alert("🎉 Happy Hug Day, Sanu!  🤗. I will love you more and more and more and moreeeeee..........💖 As you've completed the task, I'll feel sad if I dont gift you anything, So... I owe you unlimited HUGSSS.🤭💖 ");
                         revealSecret();
 
