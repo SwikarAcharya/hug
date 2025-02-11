@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hug Day for my Sanu 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Comic+Neue&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffd1dc;
+            font-family: 'Comic Neue', cursive;
+            overflow-x: hidden;
+        }
+
+        .container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1,h2 {
+            font-family: 'Pacifico', cursive;
+            color: #ff69b4;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px #fff;
+            cursor: pointer;
+        }
+
+        .hug-btn {
+            background: #ff69b4;
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+
+        .hug-btn:active {
+            transform: scale(0.95);
+        }
+
+        .counter {
+            font-size: 24px;
+            color: #ff1493;
+            margin: 20px 0;
+        }
+
+        .hearts-container {
+            position: fixed;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .heart {
+            position: absolute;
+            animation: float 3s linear forwards;
+            font-size: 24px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .mini-game {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .draggable {
+            width: 60px;
+            height: 60px;
+            background: #ff69b4;
+            border-radius: 50%;
+            margin: 10px;
+            display: inline-block;
+            cursor: grab;
+            touch-action: none;
+            transition: transform 0.3s;
+        }
+
+        .basket {
+            width: 100px;
+            height: 100px;
+            background: #98fb98;
+            border-radius: 20px;
+            margin: 20px auto;
+            border: 3px dashed #228b22;
+        }
+
+        .secret-message {
+            display: none;
+            margin: 20px 0;
+            padding: 10px;
+            background: #fff;
+            border-radius: 10px;
+            animation: rainbow 2s infinite;
+        }
+
+        @keyframes rainbow {
+            0% { color: #ff0000; }
+            25% { color: #ff9900; }
+            50% { color: #33cc33; }
+            75% { color: #3399ff; }
+            100% { color: #ff0000; }
+        }
+
+        #gameScore {
+            font-size: 20px;
+            color: #228b22;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 onclick="revealSecret()">💖 Happy Hug Day! Sanu 💖</h2>
+        <button class="hug-btn" onclick="sendHug()">Hug Me! 🤗</button>
+        <div class="counter">Hugs Given: <span id="hugCount">0</span></div>
+        
+        <div class="mini-game">
+            <h2>Collect the Hearts! 💕</h2>
+            <div id="gameScore">Hearts Collected: 0%</div>
+            <div class="basket" id="basket"></div>
+            <div class="draggable" id="heart1">💖</div>
+            <div class="draggable" id="heart2">💖</div>
+            <div class="draggable" id="heart3">💖</div>
+        </div>
+
+        <div id="secretMessage" class="secret-message"></div>
+    </div>
+
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <script>
+        let hugCount = 0;
+        // const hugSound = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2861/2861-preview.mp3'] });
+        const hugSound = new Howl({ src: ['hug.wav'] });
+        const sparkleSound = new Howl({ src: ['baloon.wav'] });
+        // const sparkleSound = new Howl({ src: ['https://assets.mixkit.co/active_storage/sfx/2439/2439-preview.mp3'] });
+
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 10; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(heart);
+            }
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 3000);
+        }
+
+        function sendHug() {
+            hugCount++;
+            document.getElementById('hugCount').textContent = hugCount;
+            hugSound.play();
+            createHearts();
+            
+            if (hugCount === 10) {
+                alert("Wow! I knew that you're my hugging machine! 💕");
+            }
+        }
+
+        function revealSecret() {
+            const messages = [
+                "You're the best! 💖",
+                "I love you more! 😘",
+                "You're my sunshine! 🌞",
+                "Best girlfriend ever! 🌟",
+                "You make me so happy! 🥰"
+            ];
+            const secretDiv = document.getElementById('secretMessage');
+            secretDiv.style.display = 'block';
+            secretDiv.textContent = messages[Math.floor(Math.random() * messages.length)];
+            setTimeout(() => {
+                secretDiv.style.display = 'none';
+            }, 2000);
+        }
+
+        // Drag and drop game
+        let score = 0;
+        const draggables = document.querySelectorAll('.draggable');
+        const basket = document.getElementById('basket');
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                draggable.style.position = 'absolute';
+                draggable.style.left = touch.clientX - 30 + 'px';
+                draggable.style.top = touch.clientY - 30 + 'px';
+            });
+
+            draggable.addEventListener('touchend', () => {
+                const draggableRect = draggable.getBoundingClientRect();
+                const basketRect = basket.getBoundingClientRect();
+                
+                if (draggableRect.top < basketRect.bottom &&
+                    draggableRect.bottom > basketRect.top &&
+                    draggableRect.left < basketRect.right &&
+                    draggableRect.right > basketRect.left) {
+                    score++;
+                    document.getElementById('gameScore').textContent = `Hearts Collected: ${(score*33)+1}%`;
+                    draggable.style.display = 'none';
+                    sparkleSound.play();
+                    
+                    if (score === 3) {
+                        alert("🎉 Happy Hug Day, Sanu!  🤗. I will love you more and more and more and moreeeeee..........💖 As you've completed the task, I'll feel sad if I dont gift you anything, So... I owe you unlimited HUGSSS.🤭💖 ");
+                        revealSecret();
+
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
